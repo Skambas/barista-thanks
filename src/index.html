@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Налий собі кави ☕</title>
+    <meta name="description" content="Налий собі віртуальної кави й отримай маленьку подяку від баристи ☕" />
+    <meta name="theme-color" content="#766149" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.json" />
+    <!-- Open Graph і apple-touch-icon додамо на етапах 4 і 6 (потрібні абсолютні URL) -->
+  </head>
+  <!-- Значення {{...}} підставляє сервер (етап 4). У dev вони порожні, див. src/config.js -->
+  <body data-jar-url="{{MONOBANK_JAR_URL}}" data-signature="{{BARISTA_SIGNATURE}}">
+    <main>
+      <section id="game" aria-labelledby="game-title">
+        <h1 class="title" id="game-title">Налий собі кави</h1>
+
+        <div
+          id="stage"
+          tabindex="0"
+          role="button"
+          aria-label="Потримай, щоб налити каву. З клавіатури: утримуй пробіл або Enter"
+        >
+          <svg viewBox="0 0 160 232" aria-hidden="true">
+            <defs>
+              <clipPath id="glass">
+                <path d="M20 60 L140 60 L124 215 Q123 222 116 222 L44 222 Q37 222 36 215 Z" />
+              </clipPath>
+            </defs>
+
+            <!-- пара -->
+            <g class="steam" fill="none" stroke="#f1e8d6" stroke-width="3" stroke-linecap="round">
+              <path d="M66 50 q-6 -8 0 -16 t0 -16" />
+              <path d="M94 50 q-6 -8 0 -16 t0 -16" />
+            </g>
+
+            <!-- струмінь -->
+            <rect id="stream" x="77" y="0" width="6" height="0" rx="3" fill="#4b2f1d" />
+
+            <!-- склянка -->
+            <path
+              d="M20 60 L140 60 L124 215 Q123 222 116 222 L44 222 Q37 222 36 215 Z"
+              fill="rgba(241,232,214,.22)"
+            />
+            <g clip-path="url(#glass)">
+              <rect id="coffee" x="0" y="222" width="160" height="0" fill="#4b2f1d" />
+              <g id="surface" transform="translate(0 222)">
+                <g class="wave"><path id="wave" fill="#8a6446" /></g>
+              </g>
+            </g>
+
+            <!-- відмітка "ідеально" -->
+            <line
+              x1="26"
+              x2="134"
+              y1="97"
+              y2="97"
+              stroke="#f1e8d6"
+              stroke-width="1.5"
+              stroke-dasharray="4 5"
+              opacity=".75"
+            />
+            <path
+              d="M20 60 L140 60 L124 215 Q123 222 116 222 L44 222 Q37 222 36 215 Z"
+              fill="none"
+              stroke="#f1e8d6"
+              stroke-width="3"
+              stroke-linejoin="round"
+            />
+
+            <!-- калюжка, якщо через край -->
+            <ellipse id="puddle" cx="80" cy="226" rx="46" ry="4" fill="#4b2f1d" opacity=".7" />
+          </svg>
+        </div>
+
+        <p class="hint" id="hint" aria-live="polite">Потримай склянку, щоб налити каву</p>
+
+        <div class="game-links">
+          <button class="ghost" id="skip" type="button">Пропустити</button>
+          <a
+            class="ghost"
+            id="tip-link"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            referrerpolicy="no-referrer"
+            hidden
+            >Одразу до чайових</a
+          >
+        </div>
+
+        <button class="sound" id="sound" type="button" aria-label="Звук наливання" aria-pressed="false">
+          🔇
+        </button>
+      </section>
+
+      <section id="result" hidden tabindex="-1" aria-label="Подяка від баристи">
+        <p class="caption" id="caption"></p>
+
+        <div class="note-wrap" id="note-wrap">
+          <div class="note" id="note" aria-live="polite">
+            <p class="phrase" id="phrase"></p>
+            <p class="sign" id="sign"></p>
+          </div>
+        </div>
+
+        <div class="actions">
+          <a
+            class="tip"
+            id="tip"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            referrerpolicy="no-referrer"
+            hidden
+            >☕ Лишити чайові</a
+          >
+          <button class="secondary" id="share" type="button" hidden>Поділитись у сторіз</button>
+          <div class="more">
+            <button class="ghost" id="again" type="button">Ще одна</button>
+            <button class="ghost" id="replay" type="button">Налити ще раз</button>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

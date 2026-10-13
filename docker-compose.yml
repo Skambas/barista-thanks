@@ -1,0 +1,46 @@
+services:
+  barista-thanks:
+    # Образ збирає GitHub Actions (див. .github/workflows/ci.yml).
+    # Заміни OWNER на свій логін GitHub малими літерами (і назву репозиторію, якщо вона інша).
+    image: ${IMAGE:-ghcr.io/skambas/barista-thanks:latest}
+    # Хочеш збирати образ прямо на сервері замість GHCR? Закоментуй image вище й розкоментуй:
+    # build: .
+    container_name: barista-thanks
+    init: true
+    restart: unless-stopped
+    environment:
+      PORT: ${PORT:-3000}
+      SITE_URL: ${SITE_URL:-}
+      MONOBANK_JAR_URL: ${MONOBANK_JAR_URL:-}
+      BARISTA_SIGNATURE: ${BARISTA_SIGNATURE:-}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      ADMIN_TELEGRAM_IDS: ${ADMIN_TELEGRAM_IDS:-}
+    volumes:
+      - barista-data:/data
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '3'
+    networks:
+      - proxy
+    # Варіант без спільної мережі з Nginx Proxy Manager: розкоментуй порт
+    # і в NPM вказуй IP сервера та цей порт (мережу proxy тоді можна прибрати).
+    # ports:
+    #   - '3000:3000'
+
+networks:
+  proxy:
+    external: true
+    # Ім'я Docker-мережі, у якій працює Nginx Proxy Manager
+    name: ${PROXY_NETWORK:-nginx-proxy-manager_default}
+
+volumes:
+  barista-data:

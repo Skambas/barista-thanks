@@ -1,0 +1,10 @@
+{
+  "name": "Налий собі кави",
+  "short_name": "Кава",
+  "lang": "uk",
+  "start_url": "/",
+  "display": "browser",
+  "theme_color": "#766149",
+  "background_color": "#766149",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

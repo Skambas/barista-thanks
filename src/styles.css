@@ -1,0 +1,419 @@
+:root {
+  --bg: #766149;
+  --bg-deep: #5f4d3a;
+  --paper: #f1e8d6;
+  --ink: #4a3828;
+  --ink-soft: #6f5a46;
+  --accent: #f2b84b;
+  --accent-hover: #f7c766;
+  --accent-ink: #3b2815;
+  --gold-1: #fff1bd;
+  --gold-2: #f0cf73;
+  --font-hand: 'Caveat', 'Segoe Script', 'Bradley Hand', cursive;
+  --font-text: 'Lora', Georgia, serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+[hidden] {
+  display: none !important;
+}
+
+html {
+  background: var(--bg-deep);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  background: radial-gradient(ellipse at 50% 40%, var(--bg) 0%, var(--bg-deep) 100%);
+  color: var(--ink);
+  font-family: var(--font-text);
+  padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right))
+    max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+  overscroll-behavior: none;
+  touch-action: manipulation; /* без зуму подвійним тапом */
+  -webkit-tap-highlight-color: transparent;
+}
+
+main {
+  width: 100%;
+  max-width: 440px;
+  margin: auto;
+}
+
+/* ---------- Спільні кнопки ---------- */
+button,
+.ghost,
+.tip {
+  appearance: none;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease;
+}
+button:focus-visible,
+a:focus-visible,
+#stage:focus-visible {
+  outline: 3px solid var(--paper);
+  outline-offset: 3px;
+}
+button:active,
+.tip:active {
+  transform: scale(0.96);
+}
+button:disabled:active {
+  transform: none;
+}
+
+.ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 14px;
+  background: none;
+  color: var(--paper);
+  font-size: 15px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Друга за важливістю дія: контурна, не конкурує з кнопкою чайових */
+.secondary {
+  min-height: 48px;
+  padding: 0 26px;
+  background: rgba(241, 232, 214, 0.12);
+  color: var(--paper);
+  font-size: 16px;
+  border: 2px solid rgba(241, 232, 214, 0.7);
+  border-radius: 999px;
+}
+.secondary:hover:not(:disabled) {
+  background: rgba(241, 232, 214, 0.2);
+}
+.secondary:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
+/* Головна кнопка чайових: яскрава, але без пульсацій */
+.tip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 54px;
+  padding: 0 34px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-size: 26px;
+  text-decoration: none;
+  border-radius: 999px;
+  box-shadow: 0 4px 12px rgba(40, 28, 16, 0.35);
+}
+.tip:hover {
+  background: var(--accent-hover);
+}
+
+/* ---------- Гра ---------- */
+#game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px, 2.5dvh, 18px);
+  text-align: center;
+}
+.title {
+  margin: 0;
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-size: clamp(32px, 9vw, 42px);
+  line-height: 1.1;
+  color: var(--paper);
+  text-shadow: 0 2px 4px rgba(40, 28, 16, 0.3);
+}
+#stage {
+  width: min(260px, 70vw, 42dvh);
+  cursor: pointer;
+  border-radius: 24px;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+#stage svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.hint {
+  margin: 0;
+  min-height: 1.4em;
+  color: var(--paper);
+  font-style: italic;
+  font-size: 16px;
+}
+.game-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 12px;
+}
+.sound {
+  position: fixed;
+  top: max(12px, env(safe-area-inset-top));
+  right: max(12px, env(safe-area-inset-right));
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 50%;
+  background: rgba(241, 232, 214, 0.16);
+  color: var(--paper);
+  font-size: 20px;
+  line-height: 1;
+}
+
+/* Анімація кави (SVG + CSS, тільки transform/opacity) */
+.wave {
+  animation: wave 1.8s linear infinite;
+  animation-play-state: paused;
+}
+.has-coffee .wave {
+  animation-play-state: running;
+}
+@keyframes wave {
+  to {
+    transform: translateX(-40px);
+  }
+}
+
+#surface {
+  display: none;
+}
+.has-coffee #surface {
+  display: inline;
+}
+
+.steam path {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+.has-coffee .steam path {
+  animation: steam 3.2s ease-in-out infinite;
+}
+.steam path:nth-child(2) {
+  animation-delay: -1.4s;
+}
+@keyframes steam {
+  0% {
+    opacity: 0;
+    transform: translateY(6px) scaleY(0.8);
+  }
+  35% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-8px) scaleY(1.1);
+  }
+}
+
+#puddle {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scaleX(0);
+  transition: transform 0.5s ease-out;
+}
+.is-spill #puddle {
+  transform: scaleX(1);
+}
+
+/* ---------- Результат ---------- */
+#result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+}
+#result:focus {
+  outline: none;
+}
+.caption {
+  margin: 0;
+  color: var(--paper);
+  font-style: italic;
+  font-size: 16px;
+  text-align: center;
+}
+.note-wrap {
+  width: 100%;
+  transform: rotate(-1.6deg);
+  filter: drop-shadow(0 10px 14px rgba(40, 28, 16, 0.35)) drop-shadow(0 2px 3px rgba(40, 28, 16, 0.25));
+}
+.note-wrap.is-rare {
+  filter: drop-shadow(0 0 14px rgba(255, 214, 102, 0.6)) drop-shadow(0 8px 12px rgba(40, 28, 16, 0.3));
+}
+.note {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 22px;
+  min-height: 240px;
+  padding: 56px 34px 52px;
+  background:
+    repeating-linear-gradient(0deg, rgba(120, 95, 65, 0.045) 0 1px, transparent 1px 3px), var(--paper);
+}
+.note.rare {
+  background:
+    repeating-linear-gradient(0deg, rgba(120, 95, 65, 0.05) 0 1px, transparent 1px 3px),
+    linear-gradient(135deg, var(--gold-1), var(--gold-2) 55%, #f7e29a);
+}
+.note.rare::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.6) 50%, transparent 65%);
+  background-size: 250% 100%;
+  animation: shimmer 1.6s ease-out 0.5s both;
+}
+@keyframes shimmer {
+  from {
+    background-position: 150% 0;
+  }
+  to {
+    background-position: -50% 0;
+  }
+}
+.note.drop {
+  animation: drop 0.7s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+}
+@keyframes drop {
+  from {
+    transform: translateY(-28px) rotate(3deg);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+.phrase {
+  margin: 0;
+  font-family: var(--font-hand);
+  font-weight: 500;
+  font-size: clamp(30px, 8vw, 40px);
+  line-height: 1.2;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+.phrase.long {
+  font-size: clamp(24px, 6vw, 29px);
+}
+.phrase.mid {
+  font-size: clamp(27px, 7vw, 34px);
+}
+.sign {
+  margin: 0;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--ink-soft);
+  text-align: right;
+}
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.more {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 8px;
+}
+
+/* ---------- Альбомна орієнтація на телефоні ---------- */
+@media (orientation: landscape) and (max-height: 520px) {
+  main {
+    max-width: 760px;
+  }
+
+  #game {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas: 'title stage' 'hint stage' 'links stage';
+    grid-template-rows: 1fr auto 1fr;
+    column-gap: 32px;
+    text-align: left;
+  }
+  .title {
+    grid-area: title;
+    align-self: end;
+    font-size: clamp(28px, 7dvh, 38px);
+  }
+  .hint {
+    grid-area: hint;
+  }
+  .game-links {
+    grid-area: links;
+    justify-content: flex-start;
+    align-self: start;
+  }
+  .game-links .ghost {
+    padding-left: 0;
+  }
+  #stage {
+    grid-area: stage;
+    width: min(200px, 62dvh);
+  }
+
+  #result {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 16px 28px;
+    align-items: center;
+  }
+  .caption {
+    grid-column: 1 / -1;
+  }
+  .note {
+    min-height: 0;
+    padding: 32px 28px;
+  }
+}
+
+/* ---------- Зменшений рух ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .note.drop,
+  .note.rare::after {
+    animation: none;
+  }
+  .wave,
+  .has-coffee .wave {
+    animation: none;
+  }
+  .has-coffee .steam path {
+    animation: none;
+    opacity: 0.45;
+  }
+  #puddle,
+  button,
+  .tip {
+    transition: none;
+  }
+}
