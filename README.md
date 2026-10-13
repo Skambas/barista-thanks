@@ -24,8 +24,8 @@ QR на стійці → сторінка → міні-гра (потримай 
 Потрібен Node.js 20.12 або новіший (у Docker-образі Node 22).
 
 ```bash
-git clone https://github.com/<логін>/<репозиторій>.git
-cd <репозиторій>
+git clone https://github.com/Skambas/barista-thanks.git
+cd barista-thanks
 npm install
 cp .env.example .env      # Windows PowerShell: Copy-Item .env.example .env
 ```
