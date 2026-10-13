@@ -2,7 +2,7 @@ services:
   barista-thanks:
     # Образ збирає GitHub Actions (див. .github/workflows/ci.yml).
     # Заміни OWNER на свій логін GitHub малими літерами (і назву репозиторію, якщо вона інша).
-    image: ${IMAGE:-ghcr.io/OWNER/barista-thanks:latest}
+    image: ${IMAGE:-ghcr.io/skambas/barista-thanks:latest}
     # Хочеш збирати образ прямо на сервері замість GHCR? Закоментуй image вище й розкоментуй:
     # build: .
     container_name: barista-thanks
