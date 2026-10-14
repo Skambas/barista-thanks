@@ -77,7 +77,7 @@ npm run format:check
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | `MONOBANK_JAR_URL`   | Посилання на банку (`https://send.monobank.ua/jar/...`). Порожньо: кнопок чайових на сайті немає взагалі. Приймається лише `https://` |
 | `SITE_URL`           | Постійна HTTPS-адреса сайту. Потрібна для Open Graph і для `npm run qr`                                                               |
-| `BARISTA_SIGNATURE`  | Підпис на листочку і на картинці для сторіз. За замовчуванням `- Ваша бариста🦊 ☕`                                                  |
+| `BARISTA_SIGNATURE`  | Підпис на листочку і на картинці для сторіз. За замовчуванням `- Ваша бариста🦊 ☕`                                                   |
 | `CAFE_NAME`          | Назва закладу для картинки сторіз (разом із логотипом). Необов'язкова                                                                 |
 | `CAFE_INSTAGRAM`     | Instagram закладу для картинки сторіз, з `@` або без. Необов'язковий                                                                  |
 | `TELEGRAM_BOT_TOKEN` | Токен від @BotFather. Порожньо: бот вимкнено                                                                                          |
@@ -139,7 +139,7 @@ npm run format:check
 ### 1. Portainer
 
 1. _Stacks_ → _Add stack_ → метод **Repository**.
-2. Repository URL, гілка `refs/heads/main`, Compose path `docker-compose.yml`. 
+2. Repository URL, гілка `refs/heads/main`, Compose path `docker-compose.yml`.
 3. У _Environment variables_ додай `SITE_URL`, `MONOBANK_JAR_URL`, `BARISTA_SIGNATURE`, `TELEGRAM_BOT_TOKEN`, `ADMIN_TELEGRAM_IDS` (значення без лапок). За потреби `HOST_PORT`, якщо 3000 зайнятий.
 4. _Deploy the stack_. Контейнер має стати `healthy`, а в його логах з'явиться рядок про запуск бота.
 
