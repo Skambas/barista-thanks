@@ -14,13 +14,19 @@ export function escapeHtml(value) {
 
 export function renderIndex(
   template,
-  { jarUrl = '', signature = '', siteUrl = '' },
+  { jarUrl = '', signature = '', siteUrl = '', cafeName = '', cafeInstagram = '' },
   { hasOgImage = false, hasTouchIcon = false } = {},
 ) {
-  const values = { MONOBANK_JAR_URL: jarUrl, BARISTA_SIGNATURE: signature };
+  const values = {
+    MONOBANK_JAR_URL: jarUrl,
+    BARISTA_SIGNATURE: signature,
+    CAFE_NAME: cafeName,
+    CAFE_INSTAGRAM: cafeInstagram,
+  };
   // функція замість рядка-заміни, щоб $& та $` у значеннях не інтерпретувались
-  const html = template.replace(/\{\{(MONOBANK_JAR_URL|BARISTA_SIGNATURE)\}\}/g, (_, key) =>
-    escapeHtml(values[key]),
+  const html = template.replace(
+    /\{\{(MONOBANK_JAR_URL|BARISTA_SIGNATURE|CAFE_NAME|CAFE_INSTAGRAM)\}\}/g,
+    (_, key) => escapeHtml(values[key]),
   );
 
   const head = [

@@ -24,8 +24,8 @@ QR на стійці → сторінка → міні-гра (потримай 
 Потрібен Node.js 20.12 або новіший (у Docker-образі Node 22).
 
 ```bash
-git clone https://github.com/<логін>/<репозиторій>.git
-cd <репозиторій>
+git clone https://github.com/Skambas/barista-thanks.git
+cd barista-thanks
 npm install
 cp .env.example .env      # Windows PowerShell: Copy-Item .env.example .env
 ```
@@ -132,23 +132,14 @@ npm run format:check
 
 ⚠️ Токен можна опитувати лише з одного місця. Якщо локально і на сервері працює бот з тим самим токеном, обидва отримуватимуть помилку 409. Для локальних тестів залиш токен порожнім або створи другого бота.
 
-## Деплой: GitHub → Portainer → Nginx Proxy Manager
+## Деплой: Portainer → Nginx Proxy Manager
 
-### 1. GitHub
-
-1. У `docker-compose.yml` заміни `OWNER` у рядку `image:` на свій логін GitHub **малими літерами** (так само і назву репозиторію, якщо вона інша).
-2. Запуш код у гілку `main`. Файл `package-lock.json` має бути закомічений.
-3. Запусториться workflow **CI** (`.github/workflows/ci.yml`): lint, перевірка форматування, тести, збірка. Після зелених перевірок образ публікується в GHCR як `ghcr.io/<логін>/<репозиторій>:latest`.
-4. Зроби пакет публічним: GitHub → Packages → твій пакет → _Package settings_ → _Change visibility_ → Public. Образ не містить секретів. Якщо лишаєш приватним, додай у Portainer _Registries_ → Custom: `ghcr.io`, логін і токен з правом `read:packages`.
-
-### 2. Portainer
+### 1. Portainer
 
 1. _Stacks_ → _Add stack_ → метод **Repository**.
-2. Repository URL, гілка `refs/heads/main`, Compose path `docker-compose.yml`. Для приватного репозиторію увімкни _Authentication_.
+2. Repository URL, гілка `refs/heads/main`, Compose path `docker-compose.yml`.
 3. У _Environment variables_ додай `SITE_URL`, `MONOBANK_JAR_URL`, `BARISTA_SIGNATURE`, `TELEGRAM_BOT_TOKEN`, `ADMIN_TELEGRAM_IDS` (значення без лапок). За потреби `HOST_PORT`, якщо 3000 зайнятий.
 4. _Deploy the stack_. Контейнер має стати `healthy`, а в його логах з'явиться рядок про запуск бота.
-
-**Оновлення:** запушив у `main` → зелений CI → у Portainer відкрий стек → _Pull and redeploy_ з увімкненим _Re-pull image_.
 
 ⚠️ Фрази лежать у томі `barista-data`. Не став галочку «видалити томи» при видаленні стека.
 
@@ -158,7 +149,7 @@ npm run format:check
 docker run --rm -v barista-thanks_barista-data:/data -v "$PWD":/backup alpine tar czf /backup/barista-data.tgz -C /data .
 ```
 
-### 3. Nginx Proxy Manager
+### 2. Nginx Proxy Manager
 
 1. _Hosts_ → _Proxy Hosts_ → _Add Proxy Host_.
 2. Domain Names: твій домен. Scheme: `http`. Forward Hostname / IP: IP сервера з Docker. Forward Port: значення `HOST_PORT` (за замовчуванням `3000`).
@@ -260,16 +251,13 @@ Dockerfile, docker-compose.yml, .env.example
 
 **Перед деплоєм**
 
-- [ ] `docker-compose.yml`: `OWNER` замінено на свій логін (малими літерами)
 - [ ] `MONOBANK_JAR_URL` відкривається в браузері й веде на потрібну банку
 - [ ] `BARISTA_SIGNATURE` містить потрібний підпис
-- [ ] Токен бота нікуди не закомічений, а `.env` не потрапив у `git status`
 - [ ] `npm run format`, `npm run lint`, `npm test` проходять
 - [ ] `npm run icons` виконано, файли з `public/` закомічені
 
 **Деплой**
 
-- [ ] CI зелений, образ з'явився в Packages і пакет публічний (або налаштований реєстр у Portainer)
 - [ ] Стек у Portainer створено, контейнер `healthy`, у логах є запуск бота
 - [ ] У NPM створено Proxy Host із SSL, домен відкривається по HTTPS
 - [ ] `SITE_URL` у Portainer це реальний HTTPS-домен
@@ -287,7 +275,6 @@ Dockerfile, docker-compose.yml, .env.example
 
 - [ ] `npm run qr` для справжнього домену, без попереджень у консолі
 - [ ] Тестова копія зчитується з iPhone й Android з різних відстаней
-- [ ] Тираж надруковано на матовому папері
 
 ## Проблеми й рішення
 

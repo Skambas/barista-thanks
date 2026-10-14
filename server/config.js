@@ -1,5 +1,6 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { cleanName, parseInstagram } from '../src/brand.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 
@@ -34,9 +35,7 @@ export function parseSiteUrl(raw) {
 export function parseAdminIds(raw) {
   const ids = new Set();
   const invalid = [];
-  for (const part of String(raw ?? '')
-    .split(/[\s,;]+/)
-    .filter(Boolean)) {
+  for (const part of String(raw ?? '').split(/[\s,;]+/).filter(Boolean)) {
     if (/^\d{1,15}$/.test(part) && Number(part) > 0) ids.add(Number(part));
     else invalid.push(part);
   }
@@ -59,6 +58,8 @@ export function loadConfig(env = process.env) {
     siteUrl: parseSiteUrl(env.SITE_URL),
     jarUrl: parseHttpsUrl(env.MONOBANK_JAR_URL),
     signature: String(env.BARISTA_SIGNATURE ?? '').trim() || DEFAULT_SIGNATURE,
+    cafeName: cleanName(env.CAFE_NAME),
+    cafeInstagram: parseInstagram(env.CAFE_INSTAGRAM),
     botToken: String(env.TELEGRAM_BOT_TOKEN ?? '').trim(),
     adminIds: admins.ids,
     invalidAdminIds: admins.invalid,

@@ -27,7 +27,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY package.json ./
 COPY server ./server
-COPY src/phrases.json ./src/phrases.json
+COPY src/phrases.json src/brand.js ./src/
 COPY --from=build /app/dist ./dist
 
 # /data: том для SQLite; працюємо від непривілейованого користувача node

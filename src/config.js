@@ -1,3 +1,5 @@
+import { cleanName, parseInstagram } from './brand.js';
+
 const PLACEHOLDER = /^\{\{.*\}\}$/;
 export const DEFAULT_SIGNATURE = '- Ваша бариста🦊 ☕';
 
@@ -21,12 +23,15 @@ export function parseJarUrl(raw) {
 
 /**
  * Продакшен: сервер підставляє значення в data-атрибути <body> (етап 4).
- * Dev: беремо з .env (VITE_MONOBANK_JAR_URL, VITE_BARISTA_SIGNATURE).
+ * Dev: беремо з .env (VITE_MONOBANK_JAR_URL, VITE_BARISTA_SIGNATURE,
+ * VITE_CAFE_NAME, VITE_CAFE_INSTAGRAM).
  */
 export function readConfig(root = document.body, env = import.meta.env) {
   const d = root.dataset;
   return {
     jarUrl: parseJarUrl(clean(d.jarUrl) || env.VITE_MONOBANK_JAR_URL),
     signature: clean(d.signature) || clean(env.VITE_BARISTA_SIGNATURE) || DEFAULT_SIGNATURE,
+    cafeName: cleanName(clean(d.cafeName) || clean(env.VITE_CAFE_NAME)),
+    cafeInstagram: parseInstagram(clean(d.cafeInstagram) || clean(env.VITE_CAFE_INSTAGRAM)),
   };
 }

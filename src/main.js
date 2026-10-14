@@ -86,6 +86,8 @@ function prepareStory(item) {
         phrase: item.text,
         rare: item.rare,
         signature: cfg.signature,
+        cafeName: cfg.cafeName,
+        cafeInstagram: cfg.cafeInstagram,
       });
       if (token !== storyToken) return;
       storyFile = makeFile(blob);

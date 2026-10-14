@@ -11,7 +11,12 @@
     <!-- Open Graph і apple-touch-icon додамо на етапах 4 і 6 (потрібні абсолютні URL) -->
   </head>
   <!-- Значення {{...}} підставляє сервер (етап 4). У dev вони порожні, див. src/config.js -->
-  <body data-jar-url="{{MONOBANK_JAR_URL}}" data-signature="{{BARISTA_SIGNATURE}}">
+  <body
+    data-jar-url="{{MONOBANK_JAR_URL}}"
+    data-signature="{{BARISTA_SIGNATURE}}"
+    data-cafe-name="{{CAFE_NAME}}"
+    data-cafe-instagram="{{CAFE_INSTAGRAM}}"
+  >
     <main>
       <section id="game" aria-labelledby="game-title">
         <h1 class="title" id="game-title">Налий собі кави</h1>
