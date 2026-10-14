@@ -137,11 +137,13 @@ npm run format:check
 ### 1. Portainer
 
 1. _Stacks_ → _Add stack_ → метод **Repository**.
-<<<<<<< HEAD
+   <<<<<<< HEAD
 2. Repository URL, гілка `refs/heads/main`, Compose path `docker-compose.yml`.
-=======
-2. Repository URL, гілка `refs/heads/main`, Compose path `docker-compose.yml`. 
->>>>>>> 27ff15df12f15711b82275d1b021cd8121aece00
+   \=======
+3. Repository URL, гілка `refs/heads/main`, Compose path `docker-compose.yml`.
+
+> > > > > > > 27ff15df12f15711b82275d1b021cd8121aece00
+
 3. У _Environment variables_ додай `SITE_URL`, `MONOBANK_JAR_URL`, `BARISTA_SIGNATURE`, `TELEGRAM_BOT_TOKEN`, `ADMIN_TELEGRAM_IDS` (значення без лапок). За потреби `HOST_PORT`, якщо 3000 зайнятий.
 4. _Deploy the stack_. Контейнер має стати `healthy`, а в його логах з'явиться рядок про запуск бота.
 

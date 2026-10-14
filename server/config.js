@@ -35,7 +35,9 @@ export function parseSiteUrl(raw) {
 export function parseAdminIds(raw) {
   const ids = new Set();
   const invalid = [];
-  for (const part of String(raw ?? '').split(/[\s,;]+/).filter(Boolean)) {
+  for (const part of String(raw ?? '')
+    .split(/[\s,;]+/)
+    .filter(Boolean)) {
     if (/^\d{1,15}$/.test(part) && Number(part) > 0) ids.add(Number(part));
     else invalid.push(part);
   }
