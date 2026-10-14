@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # ---------- 1. Збірка фронтенду ----------
-FROM node:22-alpine AS build
+FROM node:26-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
 # --ignore-scripts: для збірки Vite нативні модулі (better-sqlite3) не потрібні
@@ -10,7 +10,7 @@ COPY . .
 RUN npm run build
 
 # ---------- 2. Продакшн-залежності (better-sqlite3 може знадобитись компіляція) ----------
-FROM node:22-alpine AS deps
+FROM node:26-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN apk add --no-cache python3 make g++ \
@@ -18,7 +18,7 @@ RUN apk add --no-cache python3 make g++ \
  && npm cache clean --force
 
 # ---------- 3. Фінальний образ ----------
-FROM node:22-alpine AS runtime
+FROM node:26-alpine AS runtime
 ENV NODE_ENV=production \
     PORT=3000 \
     DB_PATH=/data/phrases.db
